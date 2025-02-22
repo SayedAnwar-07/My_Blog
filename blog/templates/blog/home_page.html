@@ -3,10 +3,10 @@
 {% block title %}Django Blogs{% endblock %}
 
 {% block content %}
-<div class="">
+<div class="bg-[#0f0f10]">
 
      <!-- Recent Posts Section -->
-     <div class="bg-[#0f0f10] py-20 px-2"> 
+     <div class="py-20 px-2"> 
         <div class="container mx-auto flex flex-col lg:flex-row justify-between gap-4">           
             <div class="relative w-full md:w-4/6 overflow-hidden">
                 <div id="slider-container" class="flex transition-transform duration-700 ease-in-out">
@@ -68,8 +68,23 @@
         </div>
     </div>
 
+    <!-- all categories -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 container mx-auto">
+        {% for category in categories %}
+            <a href="?category={{ category.id }}">
+                <div class="relative w-full rounded-lg overflow-hidden shadow-lg break-inside-avoid group">
+                    <img src="{{ category.logo.url }}" alt="{{ category.name }}" class="w-full h-32 object-cover rounded-lg group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/45 opacity-100 group-hover:opacity-0 transition-opacity duration-500"></div>
+                    <div class="absolute bottom-4 left-4 right-4 p-4 rounded-lg opacity-100 group-hover:opacity-0 transition-opacity duration-500">
+                        <span class="text-white">{{ category.name }}</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
     <!-- Most Liked Posts Section -->
-    <div class="bg-[#0f0f10] py-20"> 
+    <div class="py-20"> 
         <div class="mt-10 container mx-auto">
             <div class="pb-10">
                 <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Most Liked Posts</p>
@@ -113,9 +128,8 @@
             </div>
         </div>
     </div>
-
     <!-- All Users Section -->
-    <div class="bg-[#0f0f10] py-20"> 
+    <div class="py-20"> 
         <div class="mt-10 container mx-auto">
             <div class="pb-10">
                 <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">All Users</p>
@@ -142,7 +156,7 @@
     </div>
 
     <!-- Most Commented Posts Section -->
-    <div class="bg-[#0f0f10] py-10 container mx-auto">
+    <div class="py-20 container mx-auto">
         <div class="pb-10">
             <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Most Interacted Posts</p>
         
@@ -194,7 +208,7 @@
     </div>
 
     <!-- Most Viewed Posts Section -->
-    <div class="bg-[#0f0f10] py-20"> 
+    <div class=" py-20"> 
         <div class="mt-10 container mx-auto">
             <div class="pb-10">
                 <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Trending Now</p>
