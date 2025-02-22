@@ -138,7 +138,8 @@ def logout_user(request):
 @login_required
 def get_profile(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
-    return render(request, 'blog/profile.html', {'profile': profile})
+    user_posts = Post.objects.filter(user=request.user) 
+    return render(request, 'blog/profile.html', {'profile': profile, 'posts': user_posts})
 
 # Edit Profile
 @login_required

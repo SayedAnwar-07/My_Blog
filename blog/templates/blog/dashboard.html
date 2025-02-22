@@ -60,13 +60,13 @@
         </div>
         <div class="flex justify-between items-center bg-[#262525] p-4 rounded-md h-[10vh]">
           <div class="flex gap-4 items-center text-white">
-            <span>Create any post</span>
+            <span class="p-2 bg-white/20 rounded-full"><i class="ri-signpost-line"></i></span><span>Create any post</span>
           </div>
           <a href="{% url 'create_post' %}" class="fa-solid fa-plus w-8 h-8 p-2 rounded-full bg-gray-200 transition-transform duration-500 hover:scale-110 inline-block"></a>
         </div>
         <div class="flex justify-between items-center bg-black p-4 rounded-md h-[10vh]">
           <div class="flex gap-4 items-center text-white">
-            <span>Create any category</span>
+            <span class="p-2 bg-white/20 rounded-full"><i class="ri-menu-search-line"></i></span><span>Create any category</span>
           </div>
           <a href="{% url 'create_category' %}" class="fa-solid fa-plus w-8 h-8 p-2 rounded-full bg-gray-200 transition-transform duration-500 hover:scale-110 inline-block"></a>
         </div>
@@ -83,7 +83,7 @@
     <!-- category -->
     <div class="container mx-auto">
       <div class="bg-[#262525] p-4 rounded-md mt-10">
-        <h2 class="text-xl font-semibold text-white">Categories</h2>
+        <h2 class="text-xl font-semibold text-white"><i class="ri-menu-search-line"></i> Categories</h2>
         <ul class="mt-4">
           {% if categories %}
               <ul>
@@ -91,7 +91,7 @@
                       <li class="p-2 border-b flex justify-between items-center">
                           <span class="text-white">{{ category.name }}</span>
                           <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="">
+                            <div tabindex="0" role="button" class="transition-transform duration-500 hover:scale-110">
                               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                               </svg>
@@ -190,6 +190,14 @@
                       </th>
                       <th
                         scope="col"
+                        class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-white"
+                      >
+                        <button class="flex items-center gap-x-2">
+                          <span>Categories</span>
+                        </button>
+                      </th>
+                      <th
+                        scope="col"
                         class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-white"
                       >
                         <button class="flex items-center gap-x-2">
@@ -231,7 +239,12 @@
                       <td
                         class="px-4 py-4 text-sm text-gray-100 whitespace-nowrap"
                       >
-                        {{ post.title }}
+                        {{ post.title|slice:":20" }} ...
+                      </td>
+                      <td
+                        class="px-4 py-4 text-sm text-gray-100 whitespace-nowrap"
+                      >
+                        {{ post.category }}
                       </td>
                       <td
                         class="px-4 py-4 text-sm text-gray-100 whitespace-nowrap"
@@ -246,8 +259,14 @@
                       <td class="px-4 py-4 text-sm whitespace-nowrap">
                         <div class="flex items-center gap-x-6">
                           <a
+                            href="{% url 'post_details' post.id %}"
+                            class=""
+                          >
+                            <i class="fa-regular fa-eye text-gray-200 hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none pt-2 transition-transform duration-500 hover:scale-110"></i>
+                          </a>
+                          <a
                             href="{% url 'delete_post' post.id %}"
-                            class="text-black hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none"
+                            class="text-black hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none transition-transform duration-500 hover:scale-110"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +274,7 @@
                               viewBox="0 0 24 24"
                               stroke-width="1.5"
                               stroke="currentColor"
-                              class="w-5 h-5 text-gray-100"
+                              class="w-5 h-5 text-gray-100 hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none"
                             >
                               <path
                                 stroke-linecap="round"
@@ -266,7 +285,7 @@
                           </a>
                           <a
                             href="{% url 'edit_post' post.id %}"
-                            class="text-black hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none"
+                            class="text-black hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none transition-transform duration-500 hover:scale-110"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +293,7 @@
                               viewBox="0 0 24 24"
                               stroke-width="1.5"
                               stroke="currentColor"
-                              class="w-5 h-5 text-gray-100"
+                              class="w-5 h-5 text-gray-100 hover:text-[#fc3d03] transition-colors duration-200 hover:text-red-500 focus:outline-none"
                             >
                               <path
                                 stroke-linecap="round"
@@ -282,7 +301,7 @@
                                 d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                               />
                             </svg>
-                          </a>
+                          </a>                         
                         </div>
                       </td>
                     </tr>

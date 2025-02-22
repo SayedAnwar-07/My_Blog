@@ -3,43 +3,62 @@
 {% block title %}Profile | Django Blogs{% endblock %}
 
 {% block content %}
-<div class="container mx-auto flex justify-center min-h-[80vh] items-center py-10">
-    <div class="w-full max-w-3xl shadow-lg rounded-md p-8 border border-gray-200 relative mx-2 md:mx-0">
-        <div class="w-full h-40 rounded-t-md overflow-hidden">
-            <img 
-                src="https://wallpapercave.com/wp/wp3173683.jpg" 
-                alt="Cover Image" 
-                class="w-full h-full object-cover">
+<div class="container mx-auto p-4 min-h-screen">
+    <div class="flex justify-between w-full">
+        <div class="flex flex-col gap-3 p-4">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="w-80 h-80 rounded-full object-cover border">
+            {% else %}
+                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">?</div>
+            {% endif %}
+            <div class="mt-10">
+                <p class="text-4xl font-semibold text-white">{{ user.username }}</p>
+                <p class="font-semibold text-white/90">{{ user.email }}</p>
+            </div>
         </div>
-        <div class="text-center absolute top-32 left-8">
-            <img 
-                src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png{% endif %}" 
-                alt="Profile Picture" 
-                class="w-32 h-32 rounded-full border-4 border-white shadow-lg">
-        </div>
-        <div class="mt-20 flex flex-col justify-between">
-
-                <div class="flex justify-between">
-                    <h2 class="text-3xl font-bold text-gray-800">{{ profile.user.username }}</h2>
-                    <div class="mt-6 flex justify-start">
-                        <a href="{% url 'edit_profile' %}" 
-                           class="text-black hover:text-[#fc3d03] transition-all duration-300 flex items-center">
+         <div class="pt-10">
+                <a href="{% url 'edit_profile' %}" 
+                           class="text-gray-200 hover:text-[#fc3d03] transition-all duration-300 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
                             </svg>
-                        </a>
+                </a>
+         </div>
+    </div>       
+
+    <div class="relative w-full overflow-hidden">
+        <div id="slider-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 mt-28">
+            {% for post in posts %}
+            <a href="{% url 'post_details' post.id %}" class="block w-full transform transition-transform duration-300 hover:scale-105">
+                <div class="relative w-full rounded-lg overflow-hidden shadow-lg group">
+                    <!-- Image -->
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-64 md:h-80 object-cover rounded-lg">
+        
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-black/45 opacity-100 group-hover:opacity-0 transition-opacity duration-500"></div>
+        
+                    <!-- Content -->
+                    <div class="absolute inset-0 flex flex-col justify-end p-4 opacity-100 group-hover:opacity-0 transition-opacity duration-500">
+                        <span class="text-white text-xl font-bold">{{ post.title }}</span>
+                        <p class="text-white/80 text-sm mt-2">{{ post.description|slice:":100" }}...</p>
+                    </div>
+        
+                    <!-- Stats -->
+                    <div class="absolute top-4 left-4 flex gap-3 text-white">
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-heart-fill text-[#fc3d03]"></i>{{ post.like_count }}
+                        </span>
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-eye-fill text-[#fc3d03]"></i>{{ post.view_count }}
+                        </span>
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-chat-3-fill text-[#fc3d03]"></i>{{ post.comments.count }}
+                        </span>
                     </div>
                 </div>
-                
-                <p class="text-gray-600 mt-1 flex items-center justify-start">
-                    <i class="fas fa-envelope text-[#fc3d03] mr-2"></i>{{ profile.user.email }}
-                </p>
-                <p class="mt-2 text-gray-700 italic flex items-center justify-start">
-                    <i class="fas fa-quote-left text-[#fc3d03] mr-2"></i>{{ profile.bio|default:"No bio available" }}
-                </p>
-
-          
-        </div>      
+            </a>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
