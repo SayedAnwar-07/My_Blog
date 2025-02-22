@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+     <!-- Favicon -->
+     <link rel="icon" type="image/png" href="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png">
+
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="bg-[#0f0f10]">
+
+    <!-- Navbar -->
+    <div class="bg-black p-0 shadow-lg">
+        <div class="navbar container mx-auto p-0">
+            <div class="navbar-start">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                        <i class="ri-align-justify text-white"></i>
+                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content bg-black z-[1] mt-3 w-52 p-2 shadow">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'all_posts' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">All Post</a>
+                            <a href="{% url 'get_profile' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Profile</a>
+                            <a href="{% url 'create_post' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Create a post</a>
+                            <a href="{% url 'contact' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Contact</a>
+                            {% if user.id %}
+                                <a href="{% url 'user_dashboard' user.id %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Dashboard</a>
+                            {% endif %}
+                            <a href="{% url 'logout' %}" class="text-white block px-4 py-1 bg-[#fc3d03] transition-transform duration-500 hover:scale-110 inline-block my-3">Logout</a>
+                        {% else %}
+                            <a href="{% url 'all_posts' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">All Post</a>
+                            <a href="{% url 'contact' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Contact</a>
+                            <a href="{% url 'login' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3">Sign In</a>
+                            <a href="{% url 'register' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block mt-3 ">Sign Up</a>
+                        {% endif %}
+                    </ul>
+                </div>
+                <a href="{% url 'home_page' %}" class="">
+                    <img class="h-12 w-12 object-cover hover:scale-110 transition-transform duration-500" src="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png" alt="">
+                </a>
+            </div>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'all_posts' %}" class="px-4 text-white transition-transform duration-500 hover:scale-110 inline-block">All Post</a>
+                        <a href="{% url 'create_post' %}" class="px-4 text-white transition-transform duration-500 hover:scale-110 inline-block">Create a post</a>
+                        <a href="{% url 'contact' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block">Contact</a>
+                    {% else %}
+                        <a href="{% url 'all_posts' %}" class="px-4 text-white transition-transform duration-500 hover:scale-110 inline-block">All Post</a>
+                        <a href="{% url 'contact' %}" class="text-white block px-4 transition-transform duration-500 hover:scale-110 inline-block">Contact</a>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="navbar-end">
+                {% if user.is_authenticated %}
+                    <details class="dropdown dropdown-bottom dropdown-end hidden lg:flex m-0">
+                        <summary class="btn bg-transparent hover:bg-transparent shadow-transparent hover:border-none border-none m-1">
+                            <img class="h-10 w-10 rounded-full hover:scale-110 transition-transform duration-500" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+                        </summary>
+                        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                            {% if user.id %}
+                                <li><a href="{% url 'user_dashboard' user.id %}" class=""><i class="ri-dashboard-line "></i>Dashboard</a></li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'logout' %}" class="mt-4 bg-black text-white hover:bg-black hover:text-[#fc3d03]">
+                                    <svg class="h-5 w-5 text-red-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z"/>
+                                        <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"/>
+                                        <path d="M7 12h14l-3 -3m0 6l3 -3"/>
+                                    </svg>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </details>
+                {% else %}
+                    <div class="hidden lg:flex">
+                        <a href="{% url 'login' %}" class="px-6 py-2 text-white bg-black object-cover rounded-md mx-2"><span class="transition-transform duration-500 hover:scale-110 inline-block">Sign In</span></a>
+                        <a href="{% url 'register' %}" class="px-6 py-2 text-white bg-black object-cover rounded-md mx-2"><span class="transition-transform duration-500 hover:scale-110 inline-block">Sign Up</span></a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Toast Messages -->
+    <div class="notifications fixed top-4 right-4 space-y-4 z-50">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast w-[350px] {% if message.tags %}{{ message.tags }}{% endif %} p-4">
+                    <i class="fas 
+                        {% if message.tags == 'success' %}fa-check-circle{% endif %}
+                        {% if message.tags == 'error' %}fa-exclamation-circle{% endif %}
+                        {% if message.tags == 'warning' %}fa-exclamation-triangle{% endif %}
+                        {% if message.tags == 'info' %}fa-info-circle{% endif %}
+                    "></i>
+                    <div class="content">
+                        <span class="text-sm">{{ message }} </span>
+                    </div>
+                    <i class="fa-solid fa-xmark cursor-pointer" onclick="this.parentElement.remove()"></i>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div>
+        {% include 'footer.html' %}
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <script>
+        // Toast Auto-Close Functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            const toasts = document.querySelectorAll(".toast");
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    toast.remove();
+                }, 5000);
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+        gsap.from("main", {
+            opacity: 0,
+            y: -50,
+            duration: 1,
+            ease: "power2.out"
+        });
+    });
+    </script>
+</body>
+</html>

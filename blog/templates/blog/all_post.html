@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}All Post | Django Blogs{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+   <!-- Category Section - Mobile First -->
+    <div class="lg:hidden mb-8">
+        <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            Categories
+        </h3>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <ul class="space-y-2">
+                <li>
+                    <a href="?category=" class="flex items-center {% if not selected_category %}font-bold text-[#fc3d03]{% else %}text-black hover:text-[#fc3d03] {% endif %} transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path>
+                        </svg>
+                        All Categories
+                    </a>
+                </li>
+                {% for category in categories %}
+                <li>
+                    <a href="?category={{ category.id }}" class="flex items-center {% if selected_category == category.id %}font-bold text-[#fc3d03] {% else %}text-black hover:text-[#fc3d03]{% endif %} transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path>
+                        </svg>
+                        {{ category.name }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> 
+
+    <!-- Search bar -->
+        <form method="get" action="{% url 'all_posts' %}" class="relative mt-6 mb-16">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="w-5 h-5 text-gray-300" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </span>
+
+            <input type="text" name="search" class="w-full py-3 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300" placeholder="Search" value="{{ search_query }}" />
+            <button type="submit" class="absolute inset-y-0 right-0 px-8 py-2 bg-black/90 text-white transition-all duration-300 ease-in-out rounded-r-md">
+                <svg class="w-5 h-5 text-white ransition-transform duration-500 hover:scale-150" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </button>
+        </form>
+
+    <!-- All Posts and Category Section - Desktop -->
+    <div class="grid content-between min-h-screen gap-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Category Section - Desktop -->
+            <div class="hidden lg:block w-full lg:w-[400px]">
+                <h3 class="text-lg font-semibold mb-4 text-white flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    Categories
+                </h3>
+                <div class="rounded-lg shadow-md">
+                    <ul class="space-y-2 backdrop-blur-sm p-6 rounded-sm">
+                        <li>
+                            <a href="?category=" class="flex items-center {% if not selected_category %}font-bold text-[#fc3d03]{% else %}text-white hover:text-[#fc3d03]{% endif %} transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path>
+                                </svg>
+                                All Categories
+                            </a>
+                        </li>
+                        {% for category in categories %}
+                        <li>
+                            <a href="?category={{ category.id }}" class="flex items-center {% if selected_category == category.id|stringformat:"s" %}font-bold text-[#fc3d03]{% else %}text-white hover:text-[#fc3d03]{% endif %} transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"></path>
+                                </svg>
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- All Posts Section -->
+            <div class="w-full lg:w-6/6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for post in posts %}
+                    <div class="bg-[#262525] hover:shadow-md hover:bg-[#262525]/70 transition-all duration-300 overflow-hidden rounded-lg">
+                        <div class="overflow-hidden"> 
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110">
+                        </div>
+                        <div class="p-4">
+                            <h2 class="text-xl font-semibold text-gray-100 truncate">{{ post.title }}</h2>
+                            <p class="text-gray-300 text-sm">{{ post.description|slice:":60" }}...</p> 
+                        </div>
+                        <div class="flex items-center gap-3 p-4">
+                            {% if post.user.profile.profile_picture %}
+                                <img src="{{ post.user.profile.profile_picture.url }}" alt="{{ post.user.username }}" class="w-10 h-10 rounded-full object-cover border">
+                            {% else %}
+                                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-300">?</div>
+                            {% endif %}
+                            <div>
+                                <p class="text-sm font-semibold text-gray-300">{{ post.user.username }}</p>
+                                <p class="text-xs text-gray-300">{{ post.created_date|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="p-6 flex justify-between items-center">
+                            <p class="flex justify-center gap-1 items-center">
+                                <i class="fa-regular text-white fa-heart"></i><span class="text-white">{{ post.like_count }}</span> 
+                                <i class="fa-regular text-white fa-eye pl-3"></i><span class="text-white">{{ post.view_count }}</span> 
+                                <i class="fa-regular text-white fa-comment pl-3"></i><span class="text-white">{{ post.comment_count }}</span> 
+                            </p>                     
+                            <a href="{% url 'post_details' post.id %}" class="transition-all duration-300 ease-in-out text-[#fc3d03] hover:scale-105">Read More</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>           
+            </div>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow-sm">
+                {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                class="px-4 py-2 text-sm font-medium text-white bg-black border rounded-l-md hover:bg-[#fe6c37] transition-colors duration-300">
+                    Previous
+                </a>
+                {% endif %}
+
+                {% for num in posts.paginator.page_range %}
+                <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                class="px-4 py-2 text-sm font-medium text-white  transition-colors duration-300 
+                {% if posts.number == num %} bg-[#fc3d03] text-white font-bold -[#fc3d03] {% else %} bg-black hover:bg-[#fe6c37] {% endif %}">
+                    {{ num }}
+                </a>
+                {% endfor %}
+
+                {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                class="px-4 py-2 text-sm font-medium text-white bg-black  rounded-r-md hover:bg-[#fe6c37] transition-colors duration-300">
+                    Next
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

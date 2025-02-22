@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}Django Blogs{% endblock %}
+
+{% block content %}
+<div class="">
+
+     <!-- Recent Posts Section -->
+     <div class="bg-[#0f0f10] py-20 px-2"> 
+        <div class="container mx-auto flex flex-col lg:flex-row justify-between gap-4">           
+            <div class="relative w-full md:w-4/6 overflow-hidden">
+                <div id="slider-container" class="flex transition-transform duration-700 ease-in-out">
+                    {% for post in recent_posts %}
+                    <a href="{% url 'post_details' post.id %}" class="min-w-full block">
+                        <div class="relative w-full rounded-lg overflow-hidden shadow-lg break-inside-avoid group">
+                            
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-[70vh] object-cover rounded-lg group-hover:scale-105 transition-transform duration-500">
+                            
+                            <div class="absolute inset-0 bg-black/45 opacity-100 group-hover:opacity-0 transition-opacity duration-500"></div>
+                            
+                            <div class="absolute bottom-4 left-4 right-4 p-4 rounded-lg opacity-100 group-hover:opacity-0 transition-opacity duration-500">
+                                <span class="text-white text-4xl">{{ post.title }}</span>
+                                <p class="text-white text-sm">{{ post.description|slice:":100" }}...</p> 
+                            </div>
+                            
+                            <!-- Stats -->
+                            <div class="absolute top-4 left-4 flex gap-3 text-white">
+                                <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                    <i class="ri-heart-fill text-[#fc3d03]"></i>{{ post.like_count }}
+                                </span>
+                                <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                    <i class="ri-eye-fill text-[#fc3d03]"></i>{{ post.view_count }}
+                                </span>
+                                <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                    <i class="ri-chat-3-fill text-[#fc3d03]"></i>{{ post.comments.count }}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="relative w-full h-[70vh] md:w-2/6 overflow-hidden">
+                <div id="post-slider" class="flex flex-col gap-4 transition-transform duration-700 ease-in-out">
+                    {% for post in recent_posts %}
+                    <div class="post-item bg-[#262525] hover:shadow-md hover:bg-[#262525]/70 flex items-center gap-2 transition-all duration-300 overflow-hidden rounded-lg p-4">
+                        <div class="overflow-hidden"> 
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-32 h-32 object-cover transition-transform duration-500 ease-in-out hover:scale-110">
+                        </div>
+                        <div>
+                            <div class="p-4">
+                                <h2 class="text-xl font-semibold text-white">{{ post.title|slice:":30" }}</h2> 
+                            </div>
+                            <div class="p-6 flex justify-between items-center">
+                                <p class="flex justify-center gap-1 items-center">
+                                    <i class="fa-regular text-white fa-heart"></i><span class="text-white">{{ post.like_count }}</span> 
+                                    <i class="fa-regular text-white fa-eye pl-3"></i><span class="text-white">{{ post.view_count }}</span> 
+                                    <i class="fa-regular text-white fa-comment pl-3"></i><span class="text-white">{{ post.comment_count }}</span> 
+                                </p>
+                                <a href="{% url 'post_details' post.id %}" class="hover:text-black transition-all duration-300 ease-in-out text-[#fc3d03]">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Most Liked Posts Section -->
+    <div class="bg-[#0f0f10] py-20"> 
+        <div class="mt-10 container mx-auto">
+            <div class="pb-10">
+                <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Most Liked Posts</p>
+            
+                <h1 class="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">Popular Among Readers</h1>
+            
+                <p class="mt-3 text-white dark:text-white">Check out the posts that our readers love the most. These articles have received the highest number of likes and appreciation.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for post in most_liked_posts %}
+                <div class="bg-[#262525] hover:shadow-md hover:bg-[#262525]/70 transition-all duration-300 overflow-hidden rounded-lg">
+                    <div class="overflow-hidden"> 
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110">
+                    </div>
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold text-white truncate">{{ post.title }}</h2>
+                        <p class="text-white text-sm">{{ post.description|slice:":60" }}...</p> 
+                    </div>
+                    <div class="flex items-center gap-3 p-4">
+                        {% if post.user.profile.profile_picture %}
+                            <img src="{{ post.user.profile.profile_picture.url }}" alt="{{ post.user.username }}" class="w-10 h-10 rounded-full object-cover border">
+                        {% else %}
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-white">?</div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm font-semibold text-white">{{ post.user.username }}</p>
+                            <p class="text-xs text-white">{{ post.created_date|date:"F j, Y" }}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 flex justify-between items-center">
+                        <p class="flex justify-center gap-1 items-center">
+                            <i class="fa-regular text-white fa-heart"></i><span class="text-white">{{ post.like_count }}</span> 
+                            <i class="fa-regular text-white fa-eye pl-3"></i><span class="text-white">{{ post.view_count }}</span> 
+                            <i class="fa-regular text-white fa-comment pl-3"></i><span class="text-white">{{ post.comment_count }}</span> 
+                        </p>
+                        <a href="{% url 'post_details' post.id %}" class="transition-all duration-300 ease-in-out text-[#fc3d03] hover:scale-105">Read More</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- All Users Section -->
+    <div class="bg-[#0f0f10] py-20"> 
+        <div class="mt-10 container mx-auto">
+            <div class="pb-10">
+                <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">All Users</p>
+                <h1 class="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">Meet Our Community</h1>
+                <p class="mt-3 text-white dark:text-white">Discover the amazing people who are part of our network.</p>
+            </div>
+            <div class="overflow-hidden relative" id="user-slider">
+                <button id="next-button" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 p-2 rounded-full text-white z-10">
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
+                <button id="prev-button" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 p-2 rounded-full text-white z-10">
+                    <i class="ri-arrow-left-s-line"></i>
+                </button>               
+                <div class="flex transition-transform duration-1000 ease-in-out" id="user-slider-container">
+                    {% for user in users %}
+                    <a href="{% url 'user_posts' user.id %}" class="w-32 h-32 cursor-pointer block flex flex-col gap-4 justify-center items-center p-6 flex-shrink-0">
+                        <img class="object-cover w-20 h-20 rounded-full ring ring-gray-300 dark:ring-gray-600" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
+                        <h3 class="text-xs font-bold text-white">{{ user.username }}</h3>
+                    </a>
+                    {% endfor %}   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Most Commented Posts Section -->
+    <div class="bg-[#0f0f10] py-10 container mx-auto">
+        <div class="pb-10">
+            <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Most Interacted Posts</p>
+        
+            <h1 class="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">
+                Top Trending Discussions of the Week
+            </h1>
+        
+            <p class="mt-3 text-white dark:text-white">
+                Explore the most engaging conversations and hot topics everyone is talking about right now.
+            </p>
+        </div>        
+        <div class="h- px-4">
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+                {% for post in most_commented_posts %}
+                <a href="{% url 'post_details' post.id %}" class="block">
+                    <div class="relative w-full 
+                        {% if forloop.counter == 1 %} h-[30vh] 
+                        {% elif forloop.counter == 2 or forloop.counter == 3 %} h-[25vh] 
+                        {% elif forloop.counter == 4 %} h-[30vh] 
+                        {% elif forloop.counter == 5 %} h-[57vh] 
+                        {% else %} h-auto 
+                        {% endif %} rounded-lg overflow-hidden shadow-lg break-inside-avoid group">
+                        
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500">
+                        
+                        <div class="absolute inset-0 bg-black/45 opacity-100 group-hover:opacity-0 transition-opacity duration-500"></div>
+                        
+                        <div class="absolute bottom-4 left-4 right-4 p-4 rounded-lg opacity-100 group-hover:opacity-0 transition-opacity duration-500">
+                            <span class="text-white">{{ post.title }}</span>
+                        </div>
+                        
+                        <!-- Stats -->
+                        <div class="absolute top-4 left-4 flex gap-3 text-white">
+                            <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                <i class="ri-heart-fill text-[#fc3d03]"></i>{{ post.like_count }}
+                            </span>
+                            <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                <i class="ri-eye-fill text-[#fc3d03]"></i>{{ post.view_count }}
+                            </span>
+                            <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                                <i class="ri-chat-3-fill text-[#fc3d03]"></i>{{ post.comments.count }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Most Viewed Posts Section -->
+    <div class="bg-[#0f0f10] py-20"> 
+        <div class="mt-10 container mx-auto">
+            <div class="pb-10">
+                <p class="font-medium text-[#fc3d03] dark:text-[#fc3d03]">Trending Now</p>
+                <h1 class="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">Most Viewed Posts</h1>
+                <p class="mt-3 text-white dark:text-white">Explore the most popular and widely read articles on our platform. From in-depth guides to the latest trends, these posts have captured the attention of our readers.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for post in most_viewed_posts %}
+                <div class="bg-[#262525] hover:shadow-md hover:bg-[#262525]/70 transition-all duration-300 overflow-hidden rounded-lg">
+                    <div class="overflow-hidden"> 
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-48 object-cover transition-transform duration-500 ease-in-out hover:scale-110">
+                    </div>
+                    <div class="p-4">
+                        <h2 class="text-xl font-semibold text-white truncate">{{ post.title }}</h2>
+                        <p class="text-white text-sm">{{ post.description|slice:":60" }}...</p> 
+                    </div>
+                    <div class="flex items-center gap-3 p-4">
+                        {% if post.user.profile.profile_picture %}
+                            <img src="{{ post.user.profile.profile_picture.url }}" alt="{{ post.user.username }}" class="w-10 h-10 rounded-full object-cover border">
+                        {% else %}
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-white">?</div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm font-semibold text-white">{{ post.user.username }}</p>
+                            <p class="text-xs text-white">{{ post.created_date|date:"F j, Y" }}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 flex justify-between items-center">
+                        <p class="flex justify-center gap-1 items-center">
+                            <i class="fa-regular text-white fa-heart"></i><span class="text-white">{{ post.like_count }}</span> 
+                            <i class="fa-regular text-white fa-eye pl-3"></i><span class="text-white">{{ post.view_count }}</span> 
+                            <i class="fa-regular text-white fa-comment pl-3"></i><span class="text-white">{{ post.comment_count }}</span> 
+                        </p>
+                        <a href="{% url 'post_details' post.id %}" class="transition-all duration-300 ease-in-out text-[#fc3d03] hover:scale-105">Read More</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes slide {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .animate-slide {
+        display: flex;
+        animation: slide 20s linear infinite; 
+    }
+
+    .overflow-hidden {
+        overflow: hidden;
+    }
+    #user-slider-container {
+    transition: transform 0.5s ease-in-out;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const slider = document.getElementById("slider-container");
+        let index = 0;
+    
+        function slide() {
+            index++;
+            if (index >= slider.children.length) {
+                index = 0;
+            }
+            slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+    
+        setInterval(slide, 3000); 
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.getElementById('post-slider');
+        const posts = document.querySelectorAll('.post-item');
+        const totalPosts = posts.length;
+        let currentIndex = 0;
+
+        function updateActivePost() {
+            posts.forEach(post => post.classList.remove('bg-black/50'));
+            posts[currentIndex].classList.add('bg-black/50'); 
+        }
+
+        function slideNext() {
+            currentIndex = (currentIndex + 1) % totalPosts;
+            const offset = -currentIndex * (posts[0].offsetHeight + 16);
+            slider.style.transform = `translateY(${offset}px)`;
+
+            updateActivePost();
+        }
+
+        updateActivePost();
+        setInterval(slideNext, 3000);
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const sliderContainer = document.getElementById("user-slider-container");
+        const users = document.querySelectorAll("#user-slider-container a");
+        const totalUsers = users.length;
+        const visibleUsers = 4;
+        let currentIndex = 0;
+
+        const prevButton = document.getElementById("prev-button");
+        const nextButton = document.getElementById("next-button");
+
+        function slideNext() {
+            currentIndex = (currentIndex + 1) % (totalUsers - visibleUsers + 1);
+            updateSlider();
+        }
+
+        function slidePrev() {
+            currentIndex = (currentIndex - 1 + (totalUsers - visibleUsers + 1)) % (totalUsers - visibleUsers + 1);
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const offset = -currentIndex * (users[0].offsetWidth + 26); 
+            sliderContainer.style.transform = `translateX(${offset}px)`;
+        }
+
+        prevButton.addEventListener("click", slidePrev);
+        nextButton.addEventListener("click", slideNext);
+
+        setInterval(slideNext, 3000); 
+        });
+
+</script>
+{% endblock %}

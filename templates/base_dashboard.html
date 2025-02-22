@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="https://www.freeiconspng.com/thumbs/blogger-logo-icon-png/black-square-blogger-logo-icon-png-8.png">
+
+    <!-- External Libraries -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body class="bg-[#dedede]">
+    <div class="flex flex-col md:flex-row min-h-screen w-full">
+      <!-- Mobile Navbar Toggle -->
+      <div class="md:hidden p-4 bg-white dark:bg-gray-900 flex justify-between items-center border-b dark:border-gray-700 fixed w-full top-0 z-50">
+        <a href="{% url 'home_page' %}" class="text-center block">
+          <img class="h-10 w-10 object-cover" src="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png" alt="">
+        </a>
+        <button id="menuToggle" class="text-2xl">
+          <i class="ri-align-justify"></i>
+        </button>
+      </div>
+    
+      <!-- Sidebar Navbar -->
+      <aside
+        id="sidebar"
+        class="w-64 px-4 pt-20 md:pt-0 py-8 bg-black border-black border-r fixed h-screen z-40 transform -translate-x-full md:translate-x-0 md:relative transition-transform duration-300"
+      >
+        <div class="flex justify-between items-center w-full">
+          <a href="{% url 'home_page' %}" class="text-center block mt-10">
+            <img class="h-20 w-20 object-cover hover:scale-110 transition-transform duration-500" src="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png" alt="">
+          </a>
+          <button id="menuClose" class="text-2xl md:hidden">
+            <i class="ri-close-line text-white"></i>
+          </button>
+        </div>
+    
+        <hr class="my-6">
+    
+        <div class="flex flex-col justify-between flex-1">
+          <nav>
+            <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              href="{% url 'user_dashboard' user.id %}" data-page="dashboard">
+              <i class="ri-dashboard-line text-white"></i>
+              <span class="mx-4 font-medium text-white">Dashboard</span>
+            </a>
+    
+            <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              href="{% url 'get_profile' %}" data-page="profile">
+              <i class="ri-user-line text-white"></i>
+              <span class="mx-4 font-medium text-white">Accounts</span>
+            </a>
+            <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              href="{% url 'create_post' %}" data-page="profile">
+              <i class="ri-add-line text-white"></i>
+              <span class="mx-4 font-medium text-white">Create Post</span>
+            </a>
+    
+            <div class="divider mt-10 text-white"></div>
+    
+            <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+              href="{% url 'logout' %}" data-page="logout">
+              <i class="ri-logout-box-r-line text-white"></i>
+              <span class="mx-4 font-medium text-white">Logout</span>
+            </a>
+          </nav>
+        </div>
+      </aside>
+    
+      <!-- Content Section (Scrollable) -->
+      <div class="flex-1 ml-0 overflow-y-auto h-screen p-4 bg-[#0f0f10]">
+        {% block content %} {% endblock %}
+      </div>
+    </div>
+
+    <!-- Toast Messages -->
+    <div class="notifications fixed top-4 right-4 space-y-4 z-50">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="toast w-[350px] {% if message.tags %}{{ message.tags }}{% endif %} p-4"
+      >
+        <i
+          class="fas {% if message.tags == 'success' %}fa-check-circle{% endif %} {% if message.tags == 'error' %}fa-exclamation-circle{% endif %} {% if message.tags == 'warning' %}fa-exclamation-triangle{% endif %} {% if message.tags == 'info' %}fa-info-circle{% endif %}"
+        ></i>
+        <div class="content">
+          <span>{{ message }} </span>
+        </div>
+        <i
+          class="fa-solid fa-xmark cursor-pointer"
+          onclick="this.parentElement.remove()"
+        ></i>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <script>
+      // Set active class based on the current URL
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        navLinks.forEach((link) => {
+          if (link.href.includes(currentPath)) {
+            link.classList.add("bg-[#fc3d03]", "text-white");
+          } else {
+            link.classList.remove("bg-[#fc3d03]", "text-white");
+          }
+        });
+
+        // Auto-close toast messages after 5 seconds
+        const toasts = document.querySelectorAll(".toast");
+        toasts.forEach((toast) => {
+          setTimeout(() => {
+            toast.remove();
+          }, 5000);
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.getElementById("menuToggle");
+        const menuClose = document.getElementById("menuClose");
+        const sidebar = document.getElementById("sidebar");
+
+        menuToggle.addEventListener("click", function () {
+          sidebar.classList.remove("-translate-x-full");
+        });
+
+        menuClose.addEventListener("click", function () {
+          sidebar.classList.add("-translate-x-full");
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}{% if category %}Update | Django Blogs{% else %}Create{% endif %} Category | Django Blogs{% endblock %}
+
+{% block content %}
+<div class="container mx-auto min-h-[88vh] flex items-center justify-center">
+    <div class="bg-[#262525] shadow-lg rounded-md p-8 w-full max-w-lg mx-2">
+        <h1 class="text-2xl font-semibold text-gray-100 mb-6 text-center">
+            {% if category %}Update{% else %}Create{% endif %} Category
+        </h1>
+        
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="space-y-4">
+                <!-- Name Field -->
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1" for="{{ form.name.id_for_label }}">
+                        {{ form.name.label }}
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.name.errors|first }}</p>
+                    {% endif %}
+                </div>
+        
+                <!-- Logo Field -->
+                <div>
+                    <label class="block text-gray-300 font-medium mb-1" for="{{ form.logo.id_for_label }}">
+                        {{ form.logo.label }}
+                    </label>
+                    {{ form.logo }}
+                    {% if category and category.logo %}
+                        <div class="mt-2">
+                            <img src="{{ category.logo.url }}" alt="Current Logo" class="w-32 text-gray-300 h-32 object-cover rounded-md">
+                        </div>
+                    {% endif %}
+                    {% if form.logo.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.logo.errors|first }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        
+            <!-- Buttons -->
+            <div class="flex justify-center gap-10 mt-8">
+                <a href="{% url 'user_dashboard' user.id %}"
+                    class="px-6 py-3 bg-black text-white rounded-md transition-all duration-300 ease-in-out hover:bg-[#fc3d03]">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </a>
+                <button type="submit"
+                    class="px-8 py-3 bg-[#fc3d03] text-white rounded-md hover:bg-black transition-all duration-300 flex items-center">
+                    <i class="fas fa-save mr-2"></i>Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

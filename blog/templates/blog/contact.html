@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Contact | Django Blogs{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 min-h-screen">
+    <div class="pb-6">
+      <p class="font-medium text-[#fc3d03]">Get in Touch</p>
+      <h1 class="mt-2 text-2xl text-gray-100 font-semibold md:text-3xl">Contact Us</h1>
+      <p class="mt-3 text-gray-300">
+        Have questions? Fill out the form below and we'll get back to you.
+      </p>
+    </div>
+    <!-- Grid Layout -->
+    <div class="grid md:grid-cols-2 gap-8 animate-fadeIn">
+      <!-- Terms and policy-->
+      <div class="p-8 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold text-gray-100 mb-4">Terms and Conditions</h2>
+        <div class="text-gray-300 text-sm space-y-4">
+          <p>
+            By using this contact form, you agree to the following terms and conditions:
+          </p>
+
+          <!-- Steps Design -->
+          <ul class="steps steps-vertical">
+            <li class="step text-gray-100">You must provide accurate and complete information.</li>
+            <li class="step text-gray-100">Your message will be stored and processed for the purpose of responding to your inquiry.</li>
+            <li class="step text-gray-100">We reserve the right to remove any content that is deemed inappropriate or spam.</li>
+            <li class="step text-gray-100">We will not share your personal information with third parties without your consent.</li>
+          </ul>
+
+          <p>
+            For more details, please read our <a href="#" class="text-[#fc3d03] hover:underline">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="p-8 rounded-lg shadow-lg">
+        <form id="contactForm">
+          <!-- Name Field -->
+          <div class="mb-4">
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <i class="ri-user-line text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="block bg-[#201f1f] w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#fc3d03] focus:border-transparent text-gray-200 placeholder-gray-400"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+          </div>
+          <!-- Email Field -->
+          <div class="mb-4">
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <i class="ri-mail-line text-gray-400"></i>
+              </div>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="block bg-[#201f1f] w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#fc3d03] focus:border-transparent text-gray-200 placeholder-gray-400"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+          <!-- Message Field -->
+          <div class="mb-6">
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 pt-3 flex items-start pointer-events-none"
+              >
+                <i class="ri-message-2-line text-gray-400"></i>
+              </div>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                class="block bg-[#201f1f] w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-[#fc3d03] focus:border-transparent text-gray-200 placeholder-gray-400"
+                placeholder="Your message..."
+                required
+              ></textarea>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full bg-[#fc3d03] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-200 flex items-center justify-center"
+          >
+            <i class="ri-send-plane-line mr-2"></i>
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}

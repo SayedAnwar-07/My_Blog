@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4 min-h-screen">
+    <div class="flex flex-col gap-3 p-4">
+        {% if user.profile.profile_picture %}
+            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="w-80 h-80 rounded-full object-cover border">
+        {% else %}
+            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">?</div>
+        {% endif %}
+        <div class="mt-10">
+            <p class="text-4xl font-semibold text-white">{{ user.username }}</p>
+            <p class="font-semibold text-white/90">{{ user.email }}</p>
+        </div>
+    </div>
+
+    <div class="relative w-full overflow-hidden">
+        <div id="slider-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 mt-28">
+            {% for post in posts %}
+            <a href="{% url 'post_details' post.id %}" class="block w-full transform transition-transform duration-300 hover:scale-105">
+                <div class="relative w-full rounded-lg overflow-hidden shadow-lg group">
+                    <!-- Image -->
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-64 md:h-80 object-cover rounded-lg">
+        
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-black/45 opacity-100 group-hover:opacity-0 transition-opacity duration-500"></div>
+        
+                    <!-- Content -->
+                    <div class="absolute inset-0 flex flex-col justify-end p-4 opacity-100 group-hover:opacity-0 transition-opacity duration-500">
+                        <span class="text-white text-xl font-bold">{{ post.title }}</span>
+                        <p class="text-white/80 text-sm mt-2">{{ post.description|slice:":100" }}...</p>
+                    </div>
+        
+                    <!-- Stats -->
+                    <div class="absolute top-4 left-4 flex gap-3 text-white">
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-heart-fill text-[#fc3d03]"></i>{{ post.like_count }}
+                        </span>
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-eye-fill text-[#fc3d03]"></i>{{ post.view_count }}
+                        </span>
+                        <span class="flex items-center gap-1 text-sm bg-black/50 px-2 py-1 rounded-full">
+                            <i class="ri-chat-3-fill text-[#fc3d03]"></i>{{ post.comments.count }}
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

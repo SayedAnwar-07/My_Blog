@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In | Django Blogs</title>
+     <!-- Favicon -->
+     <link rel="icon" type="image/png" href="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png">
+    {% load static %}
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    <!-- Toast Messages -->
+    <div class="notifications fixed top-4 right-4 space-y-4 z-50">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="toast w-[350px] {% if message.tags %}{{ message.tags }}{% endif %} p-4"
+      >
+        <i
+          class="fas {% if message.tags == 'success' %}fa-check-circle{% endif %} {% if message.tags == 'error' %}fa-exclamation-circle{% endif %} {% if message.tags == 'warning' %}fa-exclamation-triangle{% endif %} {% if message.tags == 'info' %}fa-info-circle{% endif %}"
+        ></i>
+        <div class="content">
+          <!-- <div class="title">{{ message.tags|title }}</div> -->
+          <span>{{ message }} </span>
+        </div>
+        <i
+          class="fa-solid fa-xmark cursor-pointer"
+          onclick="this.parentElement.remove()"
+        ></i>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+    <div
+      class="flex justify-center items-center min-h-screen px-4"
+      style="
+        background-image: url(https://wallpapercave.com/wp/wp3275497.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      "
+    >
+         <!-- Overlay for fading effect -->
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="w-full max-w-md p-8 relative z-10">
+          <h2 class="text-3xl font-bold text-center text-white mb-6 flex items-center justify-center">
+            <i class="fas fa-user-plus text-[#fc3d03] mr-3"></i>Login to Your Account
+        </h2>
+          <form method="POST" class="space-y-5">
+            {% csrf_token %}
+
+            <div>
+              <label class="block text-white font-medium">
+                <i class="fas fa-user text-[#fc3d03] mr-2"></i>Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                class="w-full px-4 py-3 bg-[#ffffff87] border border-gray-300 rounded-lg transition-all duration-300"
+                placeholder="Enter username"
+                value="{{ form.username.value|default:'' }}"
+              />
+              {% if form.username.errors %}
+              <p class="text-red-500 text-sm mt-1">
+                {{ form.username.errors.0 }}
+              </p>
+              {% endif %}
+            </div>
+
+            <div>
+              <label class="block text-white font-medium">
+                <i class="fas fa-lock text-[#fc3d03] mr-2"></i>Password
+              </label>
+              <div class="relative">
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  class="w-full bg-[#ffffff87] px-4 py-3 border border-gray-300 rounded-lg transition-all duration-300"
+                  placeholder="Enter password"
+                />
+                <button
+                  type="button"
+                  onclick="togglePasswordVisibility()"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                >
+                  <i id="eyeIcon2" class="fas fa-eye-slash text-[#fc3d03]"></i>
+                </button>
+              </div>
+              {% if form.password.errors %}
+              <p class="text-red-500 text-sm mt-1">
+                {{ form.password.errors.0 }}
+              </p>
+              {% endif %}
+            </div>
+
+            <button
+              type="submit"
+              class="w-full px-6 py-3 bg-[#fc3d03] text-white rounded-lg hover:bg-black transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              <svg
+                class="w-5 h-5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25V9M4.5 9v9a2.25 2.25 0 002.25 2.25h10.5A2.25 2.25 0 0019.5 18V9m-15 0h15"
+                />
+              </svg>
+              Login
+            </button>
+
+            <p class="text-center text-white mt-4">
+              Don't have an account?
+              <a
+                href="{% url 'register' %}"
+                class="text-[#fc3d03] hover:underline"
+                >Sign Up</a
+              >
+            </p>
+          </form>
+          <hr class="my-8" />
+          <p class="text-center text-white mt-4">
+            Return to your
+            <a href="{% url 'home_page' %}" class="text-[#fc3d03] hover:underline"
+              >Home Page</a
+            >
+          </p>
+        </div>
+    </div>
+
+    <script>
+      function togglePasswordVisibility() {
+        const passwordField = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon2"); // Corrected ID
+        const type =
+          passwordField.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordField.setAttribute("type", type);
+
+        // Toggle eye icon
+        eyeIcon.classList.toggle("fa-eye-slash");
+        eyeIcon.classList.toggle("fa-eye");
+      }
+      // Toast Auto-Close Functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const toasts = document.querySelectorAll(".toast");
+        toasts.forEach((toast) => {
+          setTimeout(() => {
+            toast.remove();
+          }, 5000);
+        });
+      });
+    </script>
+  </body>
+</html>
