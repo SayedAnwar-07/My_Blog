@@ -18,14 +18,20 @@ def all_posts(request):
     categories = Category.objects.all()
     selected_category = request.GET.get('category')
     search_query = request.GET.get('search', '')
+    date_filter = request.GET.get('date_filter', 'latest') 
 
     posts = Post.objects.all()
 
-    if selected_category:
-        posts = posts.filter(category_id=selected_category)
+    if selected_category and selected_category.isdigit():
+        posts = posts.filter(category_id=int(selected_category))
 
     if search_query:
         posts = posts.filter(title__icontains=search_query)
+
+    if date_filter == 'latest':
+        posts = posts.order_by('-created_date', '-created_time')
+    elif date_filter == 'oldest':
+        posts = posts.order_by('created_date', 'created_time')
 
     posts = posts.annotate(
         like_count=Count('likes'),
@@ -48,6 +54,7 @@ def all_posts(request):
         'categories': categories,
         'selected_category': selected_category,
         'search_query': search_query,
+        'date_filter': date_filter,
     }
     
     return render(request, 'blog/all_post.html', context)

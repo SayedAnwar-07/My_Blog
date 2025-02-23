@@ -140,11 +140,14 @@
                 </button>               
                 <div class="flex transition-transform duration-1000 ease-in-out" id="user-slider-container">
                     {% for user in users %}
-                    <a href="{% url 'user_posts' user.id %}" class="w-32 h-32 cursor-pointer block flex flex-col gap-4 justify-center items-center p-6 flex-shrink-0">
-                        <img class="object-cover w-20 h-20 rounded-full ring ring-gray-300 dark:ring-gray-600" src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}">
-                        <h3 class="text-xs font-bold text-white">{{ user.username }}</h3>
-                    </a>
-                    {% endfor %}   
+                        <a href="{% if request.user.is_authenticated %}{% url 'user_posts' user.id %}{% else %}{% url 'login' %}{% endif %}" 
+                        class="w-32 h-32 cursor-pointer block flex flex-col gap-4 justify-center items-center p-6 flex-shrink-0">
+                            <img class="object-cover w-20 h-20 rounded-full ring ring-gray-300 dark:ring-gray-600" 
+                                src="{{ user.profile.profile_picture.url }}" 
+                                alt="{{ user.username }}">
+                            <h3 class="text-xs font-bold text-white">{{ user.username }}</h3>
+                        </a>
+                    {% endfor %} 
                 </div>
             </div>
         </div>

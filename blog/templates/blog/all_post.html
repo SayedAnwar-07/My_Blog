@@ -36,23 +36,60 @@
         </div>
     </div> 
 
-    <!-- Search bar -->
-        <form method="get" action="{% url 'all_posts' %}" class="relative mt-6 mb-16">
+    <!-- Search bar and Date Filter -->
+    <div class="relative mt-6 mb-16">
+        <!-- Search Bar -->
+        <form method="get" action="{% url 'all_posts' %}" class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-300" viewBox="0 0 24 24" fill="none">
                     <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </span>
-
             <input type="text" name="search" class="w-full py-3 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300" placeholder="Search" value="{{ search_query }}" />
-            <button type="submit" class="absolute inset-y-0 right-0 px-8 py-2 bg-black/90 text-white transition-all duration-300 ease-in-out rounded-r-md">
+            <button type="submit" class="absolute inset-y-0 right-0 px-8 py-2 bg-[#fc3d03] text-white transition-all duration-300 ease-in-out rounded-r-md">
                 <svg class="w-5 h-5 text-white ransition-transform duration-500 hover:scale-150" viewBox="0 0 24 24" fill="none">
                     <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </button>
         </form>
 
-    <!-- All Posts and Category Section - Desktop -->
+        <!-- Date Filter Dropdown -->
+        <div class="flex justify-end mt-4">
+            <form method="get" action="{% url 'all_posts' %}" class="flex items-center space-x-2">
+                <!-- Hidden inputs for category and search query -->
+                <input type="hidden" name="category" value="{{ selected_category }}">
+                <input type="hidden" name="search" value="{{ search_query }}">
+        
+                <!-- Label -->
+                <label for="date_filter" class="text-sm font-medium text-gray-200">Sort by:</label>
+        
+                <!-- Dropdown Container -->
+                <div class="relative">
+                    <!-- Dropdown Select -->
+                    <select 
+                        name="date_filter" 
+                        id="date_filter" 
+                        onchange="this.form.submit(); updateSortIcon(this.value);" 
+                        class="appearance-none bg-transparent border border-gray-500 text-gray-200 py-2 pl-3 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fc3d03] focus:border-[#fc3d03] transition-all duration-300 cursor-pointer"
+                    >
+                        <option value="latest" {% if date_filter == 'latest' %}selected{% endif %}>Latest</option>
+                        <option value="oldest" {% if date_filter == 'oldest' %}selected{% endif %}>Oldest</option>
+                    </select>
+        
+                    <!-- Dropdown Arrow Icon (RemixIcon) -->
+                    <div id="sort-icon" class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                        {% if date_filter == 'latest' %}
+                            <i class="ri-sort-desc text-xl text-gray-200"></i>
+                        {% else %}
+                            <i class="ri-sort-asc text-xl text-gray-200"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- All Posts and Category Section  -->
     <div class="grid content-between min-h-screen gap-8">
         <div class="flex flex-col md:flex-row gap-6">
             <!-- Category Section - Desktop -->
@@ -127,14 +164,14 @@
         <div class="mt-8 flex justify-center">
             <nav class="inline-flex rounded-md shadow-sm">
                 {% if posts.has_previous %}
-                <a href="?page={{ posts.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                <a href="?page={{ posts.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}&date_filter={{ date_filter }}" 
                 class="px-4 py-2 text-sm font-medium text-white bg-black border rounded-l-md hover:bg-[#fe6c37] transition-colors duration-300">
                     Previous
                 </a>
                 {% endif %}
 
                 {% for num in posts.paginator.page_range %}
-                <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}&date_filter={{ date_filter }}" 
                 class="px-4 py-2 text-sm font-medium text-white  transition-colors duration-300 
                 {% if posts.number == num %} bg-[#fc3d03] text-white font-bold -[#fc3d03] {% else %} bg-black hover:bg-[#fe6c37] {% endif %}">
                     {{ num }}
@@ -142,14 +179,28 @@
                 {% endfor %}
 
                 {% if posts.has_next %}
-                <a href="?page={{ posts.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" 
+                <a href="?page={{ posts.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}&date_filter={{ date_filter }}" 
                 class="px-4 py-2 text-sm font-medium text-white bg-black  rounded-r-md hover:bg-[#fe6c37] transition-colors duration-300">
                     Next
                 </a>
                 {% endif %}
             </nav>
         </div>
-
     </div>
 </div>
+
+<script>
+    function updateSortIcon(selectedValue) {
+        const sortIcon = document.getElementById('sort-icon');
+        if (selectedValue === 'latest') {
+            sortIcon.innerHTML = '<i class="ri-sort-desc text-xl"></i>';
+        } else if (selectedValue === 'oldest') {
+            sortIcon.innerHTML = '<i class="ri-sort-asc text-xl"></i>';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdown = document.getElementById('date_filter');
+        updateSortIcon(dropdown.value);
+    });
+</script>
 {% endblock %}

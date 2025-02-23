@@ -44,12 +44,15 @@
         id="sidebar"
         class="w-64 px-4 pt-20 md:pt-0 py-8 bg-black border-black border-r fixed h-screen z-40 transform -translate-x-full md:translate-x-0 md:relative transition-transform duration-300"
       >
-        <div class="flex justify-between items-center w-full pt-10">
+        <div class="flex justify-between items-start w-full pt-10">
           <div class="flex flex-col items-center text-center">
             <img class="w-24 h-24 rounded-full border-4 border-[#fc3d03]" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
             <h2 class="text-2xl font-bold mt-4 text-white">{{ user.username }}</h2>
             <p class="text-sm text-gray-200">{{ user.email }}</p>
           </div>
+          <button id="menuClose" class="text-2xl md:hidden">
+            <i class="ri-close-line text-white p-2 bg-white/30 rounded-full"></i>
+          </button>
         </div>
     
         <hr class="my-6">
