@@ -5,155 +5,131 @@
 {% block content %}
 
 <div class="flex flex-col w-full">
-  <h3 class="text-xl text-white font-bold p-4">Analytics</h3>
-    <!-- all stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      <!-- First Column: Likes, Views, Comments -->
-      <div class="flex flex-col gap-4">
-        <div class="flex justify-center items-center gap-2 bg-[#262525] h-[15vh] w-full rounded-md p-4">
+    <h3 class="text-xl text-white font-bold p-4 mx-3 lg:mx-10">Analytics</h3>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 mx-3 lg:mx-10">
+      <!-- Likes -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
           <div>
-            <p class="text-white ">Total Likes</p>
-            <h3 class="text-white text-4xl font-bold">{{ post_data.like_count }}</h3>
+            <i class="ri-heart-3-fill text-4xl text-[#fc3d03]"></i>
+            <p class="text-sm text-gray-300">Total Likes</p>
           </div>
-          <div>
-            <div class="radial-progress text-[#fc3d03] border-4" style="--value: {{ post_data.like_progress }}" role="progressbar">
-              {{ post_data.like_progress }}%
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-center items-center gap-2 bg-black text-white h-[15vh] w-full rounded-md p-4">
-          <div>
-            <p>Total Views</p>
-            <h3 class="text-4xl font-bold">{{ post_data.view_count }}</h3>
-          </div>
-          <div>
-            <div class="radial-progress text-[#fc3d03] border-4" style="--value: {{ post_data.view_progress }}" role="progressbar">
-              {{ post_data.view_progress }}%
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-center items-center gap-2 bg-[#262525] h-[15vh] w-full rounded-md p-4">
-          <div>
-            <p class="text-white ">Total Comments</p>
-            <h3 class="text-white text-4xl font-bold">{{ post_data.comment_count }}</h3>
-          </div>
-          <div>
-            <div class="radial-progress text-[#fc3d03] border-4" style="--value: {{ post_data.comment_progress }}" role="progressbar">
-              {{ post_data.comment_progress }}%
-            </div>
-          </div>
+          <h3 class="text-4xl font-bold text-white">{{ post_data.like_count }}</h3>
         </div>
       </div>
-      
-      <!-- Second Column: Total Posts, Create Post, Create Category -->
-      <div class="flex flex-col gap-4">
-        <div class="flex justify-center items-center gap-2 bg-black text-white h-[25vh] w-full rounded-md p-4">
+      <!-- Views -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
           <div>
-            <p>Total Posts</p>
-            <h3 class="text-4xl font-bold">{{ user_posts|length }}</h3>
+            <i class="ri-eye-fill text-4xl text-[#fc3d03]"></i>
+            <p class="ttext-sm text-gray-400">Total Views</p>
+            
           </div>
-          <div>
-            <div class="radial-progress text-[#fc3d03] border-4" style="--value: {{ post_data.comment_progress }}" role="progressbar">
-              {{ post_data.comment_progress }}%
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-between items-center bg-[#262525] p-4 rounded-md h-[10vh]">
-          <div class="flex gap-4 items-center text-white">
-            <span class="p-2 bg-white/20 rounded-full"><i class="ri-signpost-line"></i></span><span>Create any post</span>
-          </div>
-          <a href="{% url 'create_post' %}" class="fa-solid fa-plus w-8 h-8 p-2 rounded-full bg-gray-200 transition-transform duration-500 hover:scale-110 inline-block"></a>
-        </div>
-        <div class="flex justify-between items-center bg-black p-4 rounded-md h-[10vh]">
-          <div class="flex gap-4 items-center text-white">
-            <span class="p-2 bg-white/20 rounded-full"><i class="ri-menu-search-line"></i></span><span>Create any category</span>
-          </div>
-          <a href="{% url 'create_category' %}" class="fa-solid fa-plus w-8 h-8 p-2 rounded-full bg-gray-200 transition-transform duration-500 hover:scale-110 inline-block"></a>
+          <h3 class="text-4xl font-bold text-white">{{ post_data.view_count }}</h3>
         </div>
       </div>
-      
-      <!-- Third Column: Profile -->
-      <div class="bg-[#262525] rounded-md p-6 flex flex-col justify-center items-center h-[48vh]">
-        <img class="object-cover w-24 h-24 rounded-full" src="{{ user.profile.profile_picture.url }}" alt="avatar">
-        <p class="text-lg text-white mt-6 font-bold">{{ user.username }}</p>
-        <p class="text-sm font-medium text-white">{{ user.email }}</p>
+      <!-- Comments -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
+          <div>
+            <i class="ri-chat-3-fill text-4xl text-[#fc3d03]"></i>
+            <p class="text-sm text-gray-400">Total Comments</p>
+            
+          </div>
+          <h3 class="text-4xl font-bold text-white">{{ post_data.comment_count }}</h3>
+        </div>
+      </div>
+      <!-- Total Posts -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
+          <div>
+            <i class="ri-file-list-3-fill text-4xl text-[#fc3d03]"></i>
+            <p class="text-sm text-gray-400">Total Posts</p>
+            
+          </div>
+          <h3 class="text-4xl font-bold text-white">{{ user_posts|length }}</h3>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 mx-3 lg:mx-10">
+      <!-- Create Post -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-4">
+            <i class="ri-pencil-fill text-3xl text-[#fc3d03]"></i>
+            <div>
+              <p class="text-sm text-gray-200">Create a New Post</p>
+              <h3 class="text-xl font-bold text-gray-300">Express Your Thoughts</h3>
+            </div>
+          </div>
+          <a href="{% url 'create_post' %}" class="glass px-4 py-2 rounded-lg text-white hover-scale">Create <i class="ri-arrow-right-line"></i></a>
+        </div>
+      </div>
+      <!-- Create Category -->
+      <div class="glass p-6 rounded-xl hover-scale">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-4">
+            <i class="ri-folder-add-fill text-3xl text-[#fc3d03]"></i>
+            <div>
+              <p class="text-sm text-gray-200">Create a New Category</p>
+              <h3 class="text-xl font-bold text-gray-300">Organize Your Content</h3>
+            </div>
+          </div>
+          <a href="{% url 'create_category' %}" class="glass px-4 py-2 rounded-lg text-white hover-scale">Create <i class="ri-arrow-right-line"></i></a>
+        </div>
       </div>
     </div>
   
-    <!-- category -->
+    <!-- Category Section -->
     <div class="container mx-auto">
-      <div class="bg-[#262525] p-4 rounded-md mt-10">
-        <h2 class="text-xl font-semibold text-white"><i class="ri-menu-search-line"></i> Categories</h2>
-        <ul class="mt-4">
-          {% if categories %}
-              <ul>
-                  {% for category in categories %}
-                      <li class="p-2 border-b flex justify-between items-center">
-                          <span class="text-white">{{ category.name }}</span>
-                          <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="transition-transform duration-500 hover:scale-110">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                              </svg>
-                            </div>
-                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                              <li>
-                                  <a
-                                  href="{% url 'update_category' category.id %}"
-                                  class="text-black transition-colors duration-200 focus:outline-none"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="w-5 h-5"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                                    />
-                                  </svg>
-                                  Edit
-                                  </a>
-                              </li>
-                              <li>
-                                  <a
-                                  href="{% url 'delete_category' category.id %}"
-                                  class="text-black hover:bg-[#fc3d03]/10 transition-colors duration-200  focus:outline-none"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="w-5 h-5"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                                    />
-                                  </svg>
-                                  Delete
-                                  </a>
-                              </li>
-                            </ul>
-                          </div>
-                      </li>              
-                  {% endfor %}
-              </ul>
-          {% else %}
-              <p class="text-gray-300 text-sm">You have no categories yet.</p>
-          {% endif %}
-  
-        </ul>
+      <div class="bg-[#262525] p-6 rounded-xl mt-10 shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-semibold text-white flex items-center gap-2">
+            <i class="ri-menu-search-line text-lg"></i> Categories
+          </h2>
+        </div>
+        
+        {% if categories %}
+          <ul>
+            {% for category in categories %}
+              <li class="p-4 border-b border-[#fc3d03]/10 flex justify-between items-center">
+                <span class="text-white text-lg">{{ category.name }}</span>
+                <div class="dropdown dropdown-end">
+                  <div tabindex="0" role="button" class="transition-transform duration-500 hover:scale-110">
+                    <i class="ri-more-2-fill text-xl text-white"></i>
+                  </div>
+                  <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    <li>
+                      <a href="{% url 'update_category' category.id %}" class="text-black transition-colors duration-200 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
+                        Edit
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'delete_category' category.id %}" class="text-black hover:bg-[#fc3d03]/10 transition-colors duration-200 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+                        Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-gray-400 text-sm">You have no categories yet.</p>
+        {% endif %}
       </div>
     </div>
-  
+
     <!-- table -->
     <div class="py-8">
       <section class="container mx-auto">         
@@ -319,4 +295,24 @@
     </div>
 </div>
 
+
+<style>
+  /* Custom Glass Morphism Effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  .neon-text {
+    text-shadow: 0 0 10px #fc3d03, 0 0 20px #fc3d03, 0 0 30px #fc3d03;
+  }
+  .hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-scale:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 20px rgba(252, 61, 3, 0.3);
+  }
+</style>
 {% endblock %}

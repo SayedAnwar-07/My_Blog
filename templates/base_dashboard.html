@@ -44,13 +44,12 @@
         id="sidebar"
         class="w-64 px-4 pt-20 md:pt-0 py-8 bg-black border-black border-r fixed h-screen z-40 transform -translate-x-full md:translate-x-0 md:relative transition-transform duration-300"
       >
-        <div class="flex justify-between items-center w-full">
-          <a href="{% url 'home_page' %}" class="text-center block mt-10">
-            <img class="h-20 w-20 object-cover hover:scale-110 transition-transform duration-500" src="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png" alt="">
-          </a>
-          <button id="menuClose" class="text-2xl md:hidden">
-            <i class="ri-close-line text-white"></i>
-          </button>
+        <div class="flex justify-between items-center w-full pt-10">
+          <div class="flex flex-col items-center text-center">
+            <img class="w-24 h-24 rounded-full border-4 border-[#fc3d03]" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+            <h2 class="text-2xl font-bold mt-4 text-white">{{ user.username }}</h2>
+            <p class="text-sm text-gray-200">{{ user.email }}</p>
+          </div>
         </div>
     
         <hr class="my-6">
@@ -61,6 +60,11 @@
               href="{% url 'user_dashboard' user.id %}" data-page="dashboard">
               <i class="ri-dashboard-line text-white"></i>
               <span class="mx-4 font-medium text-white">Dashboard</span>
+            </a>
+            <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+            href="{% url 'home_page' %}" data-page="dashboard">
+              <i class="ri-home-4-line text-white"></i>
+              <span class="mx-4 font-medium text-white">Home</span>
             </a>
     
             <a class="nav-link flex items-center px-4 py-2 mt-5 text-white transition-colors duration-300 transform rounded-md hover:bg-[#fc3d03]/30 dark:hover:bg-gray-800 dark:hover:text-gray-200"
