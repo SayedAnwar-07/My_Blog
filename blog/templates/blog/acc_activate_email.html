@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification | Django Blogs</title>
+     <!-- Favicon -->
+     <link rel="icon" type="image/png" href="https://cdn.freebiesupply.com/images/large/2x/blogger-logo-transparent.png">
+    {% load static %}
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    <!-- Toast Messages -->
+    <div class="notifications fixed top-4 right-4 space-y-4 z-50">
+      {% if messages %} {% for message in messages %}
+      <div
+        class="toast w-[350px] {% if message.tags %}{{ message.tags }}{% endif %} p-4"
+      >
+        <i
+          class="fas {% if message.tags == 'success' %}fa-check-circle{% endif %} {% if message.tags == 'error' %}fa-exclamation-circle{% endif %} {% if message.tags == 'warning' %}fa-exclamation-triangle{% endif %} {% if message.tags == 'info' %}fa-info-circle{% endif %}"
+        ></i>
+        <div class="content">
+          <!-- <div class="title">{{ message.tags|title }}</div> -->
+          <span>{{ message }} </span>
+        </div>
+        <i
+          class="fa-solid fa-xmark cursor-pointer"
+          onclick="this.parentElement.remove()"
+        ></i>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <div class="conatiner mx-auto min-h-screen flex justify-center items-center">
+        <h2>Hello {{ user.username }}</h2>
+        <p>Thank you for registering with Django Blogs! Please click the link below to activate your account:</p>
+        
+        <a href="{{ protocol }}://{{ domain }}/activate/{{ uid }}/{{ token }}">Activate your account</a>
+
+        <p>If you didn't sign up for an account, please ignore this message.</p>
+    </div>
+
+    <script>
+      function togglePasswordVisibility() {
+        const passwordField = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon2"); // Corrected ID
+        const type =
+          passwordField.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordField.setAttribute("type", type);
+
+        // Toggle eye icon
+        eyeIcon.classList.toggle("fa-eye-slash");
+        eyeIcon.classList.toggle("fa-eye");
+      }
+      // Toast Auto-Close Functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const toasts = document.querySelectorAll(".toast");
+        toasts.forEach((toast) => {
+          setTimeout(() => {
+            toast.remove();
+          }, 5000);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -7,12 +7,11 @@ from .forms import UserRegisterForm,CategoryForm
 from .models import Profile, Post, Comment, Like, Category
 from django.db.models import Count
 from .models import Post, Category, Comment, Like
-from django.utils.crypto import get_random_string
-from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Max
 from django.db.models import Count
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # all posts
 def all_posts(request):
@@ -57,13 +56,13 @@ def all_posts(request):
 def home_page(request):
     category_id = request.GET.get('category')
     
-    # Base queryset with annotations
+    if category_id:
+        return HttpResponseRedirect(reverse('all_posts') + f'?category={category_id}')
+    
     posts_queryset = Post.objects.annotate(
         like_count=Count('likes'),
         comment_count=Count('comments')
     )
-    if category_id:
-        posts_queryset = posts_queryset.filter(category_id=category_id)
 
     posts = posts_queryset.order_by('-created_date')
 
@@ -356,7 +355,13 @@ def delete_category(request, category_id):
 
     return render(request, 'blog/delete_category.html', {'category': category})
 
-
 # contact
 def contact(request):
     return render(request, 'blog/contact.html')
+
+
+def forgot_password_request(request):
+    return render(request, 'blog/forgot_password_request.html')
+
+def forgot_password_confirm(request, uidb64, token):
+    return render(request, 'blog/forgot_password_confirm.html')

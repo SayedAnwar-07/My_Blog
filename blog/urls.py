@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     register_user, login_user, logout_user, get_profile, 
-    edit_profile,post_form,delete_post,post_details,like_post,home_page,all_posts,user_dashboard,create_or_update_category,get_category,delete_category,contact,user_posts
+    edit_profile,post_form,delete_post,post_details,like_post,home_page,all_posts,user_dashboard,create_or_update_category,get_category,delete_category,contact,user_posts,forgot_password_request,forgot_password_confirm
 )
 
 urlpatterns = [
@@ -15,6 +15,9 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('profile/', get_profile, name='get_profile'),
     path('profile/edit/', edit_profile, name='edit_profile'),
+    
+    path('forgot-password/', forgot_password_request, name='forgot_password_request'),
+    path('forgot-password-confirm/<uidb64>/<token>/', forgot_password_confirm, name='forgot_password_confirm'),
     
     path('create/', post_form, name='create_post'),
     path('edit/<int:post_id>/', post_form, name='edit_post'),

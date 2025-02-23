@@ -130,3 +130,11 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 8000
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'djangohsot@gmail.com'
+EMAIL_HOST_PASSWORD = 'D-j@ngo-0.1.0' 
