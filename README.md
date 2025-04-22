@@ -18,7 +18,7 @@
 ## 🛠 Tech Stack
 
 - **Framework:** Django 5.1.6
-- **Frontend:** HTML, CSS, Bootstrap (custom styling)
+- **Frontend:** HTML, CSS, Tailwindcss (custom styling)
 - **Database:** SQLite (default for development)
 - **Media Handling:** Pillow
 - **Templating:** Django Templates
